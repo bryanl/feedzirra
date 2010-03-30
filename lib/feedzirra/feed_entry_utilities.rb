@@ -1,5 +1,5 @@
 module Feedzirra
-  module FeedEntryUtilities    
+  module FeedEntryUtilities
     def published
       @published || @updated
     end

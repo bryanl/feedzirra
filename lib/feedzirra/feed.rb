@@ -84,7 +84,7 @@ module Feedzirra
       url_queue.each do |url|
         easy = Curl::Easy.new(url) do |curl|
           curl.headers["User-Agent"]        = (options[:user_agent] || USER_AGENT)
-          curl.headers["If-Modified-Since"] = DateTime.parse(options[:if_modified_since]).httpdate if options.has_key?(:if_modified_since)
+          curl.headers["If-Modified-Since"] = options[:if_modified_since].httpdate if options.has_key?(:if_modified_since)
           curl.headers["If-None-Match"]     = options[:if_none_match] if options.has_key?(:if_none_match)
           curl.headers["Accept-encoding"]   = 'gzip, deflate' if options.has_key?(:compress)
           curl.follow_location = true
@@ -203,7 +203,7 @@ module Feedzirra
     def self.add_url_to_multi(multi, url, url_queue, responses, options)
       easy = Curl::Easy.new(url) do |curl|
         curl.headers["User-Agent"]        = (options[:user_agent] || USER_AGENT)
-        curl.headers["If-Modified-Since"] = DateTime.parse(options[:if_modified_since]).httpdate if options.has_key?(:if_modified_since)
+        curl.headers["If-Modified-Since"] = options[:if_modified_since].httpdate if options.has_key?(:if_modified_since)
         curl.headers["If-None-Match"]     = options[:if_none_match] if options.has_key?(:if_none_match)
         curl.headers["Accept-encoding"]   = 'gzip, deflate' if options.has_key?(:compress)
         curl.follow_location = true
@@ -261,7 +261,7 @@ module Feedzirra
     def self.add_feed_to_multi(multi, feed, feed_queue, responses, options) 
       easy = Curl::Easy.new(feed.feed_url) do |curl|
         curl.headers["User-Agent"]        = (options[:user_agent] || USER_AGENT)
-        curl.headers["If-Modified-Since"] = DateTime.parse(feed.last_modified).httpdate if feed.last_modified
+        curl.headers["If-Modified-Since"] = DateTime.parse(feed.last_modified.to_s).httpdate if feed.last_modified
         curl.headers["If-None-Match"]     = feed.etag if feed.etag
         curl.userpwd = options[:http_authentication].join(':') if options.has_key?(:http_authentication)
         curl.follow_location = true
